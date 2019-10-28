@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <div class="center-block">
-      <h1 class="center-block__header">Bullying.dev</h1>
+      <h1 class="center-block__header">Welcome to Cardcast
+      </h1>
       <div class="center-block__input">
         <label for="input-1">
           <input
@@ -9,9 +10,11 @@
             type="number"
             class="input"
             id="input-1"
-            placeholder="Enter the 4 digit code"
+            placeholder="Enter code"
           />
         </label>
+      <b-button class="join-game-button btn" id="joinGame" variant="success">Join game</b-button>
+      <b-button class="join-game-button btn" id="joinGame" variant="success">Create game</b-button>
       </div>
     </div>
   </div>
@@ -34,6 +37,29 @@ export default {
 <style lang="scss">
 @import "@/assets/styles/global.scss";
 @import "@/assets/styles/buttons.scss";
+
+.join-game-button{    
+  margin-top: 20px;
+  font-weight: bold;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 24px;
+  float: right;
+  background-color: #FF8463;
+  border: none;
+  border-radius: 10px;
+  color: white;
+}
+
+.btn{
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+}
+
+.join-game-button:hover{
+  background-color: rgb(255, 158, 131);
+}
 
 #app {
   background-color: #4254f4;
@@ -67,7 +93,7 @@ export default {
       line-height: 4rem;
       outline: none;
       padding: 0 1rem;
-      color: #4254f4;
+      color: #FF8463;
 
       &:focus {
         & + .input-after {
