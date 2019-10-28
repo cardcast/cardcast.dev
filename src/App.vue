@@ -88,7 +88,7 @@ export default {
     }
 
     .input {
-      width: 100%;
+      width: calc(100% - 2rem);
       border: none;
       border-radius: 5px;
       font-family: "Work Sans", sans-serif;
