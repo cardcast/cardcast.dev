@@ -3,30 +3,58 @@
     <div class="center-block">
       <h1 class="center-block__header">Bullying.dev</h1>
       <div class="center-block__input">
-        <label for="input-1">
-          <input
-            @change="checkRoom"
-            type="number"
-            class="input"
-            id="input-1"
-            placeholder="Enter the 4 digit code"
-          />
-        </label>
+        <form @submit="joinLobby">
+          <label>
+            <input
+              v-model="code"
+              type="text"
+              maxlength="4"
+              class="input"
+              placeholder="Enter the 4 digit code"
+            />
+          </label>
+          <label>
+            <input v-model="username" type="text" class="input" placeholder="Enter a username" />
+          </label>
+          <input type="submit" />
+        </form>
+
+        <input type="submit" @click="createLobby" value="Create as host" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import store from "./store/index";
+
 export default {
   name: "app",
   components: {},
+  data() {
+    return {
+      username: "",
+      code: ""
+    };
+  },
   methods: {
-    checkRoom(value) {
-      console.log(value.srcElement.value);
-
-      this.$connect(`ws://localhost:6969/game/${value.srcElement.value}`, { format: "json" });
+    joinLobby(event) {
+      event.preventDefault();
+      this.$socket.sendObj({
+        type: "PlayerReadyUp",
+        name: this.username,
+        code: this.code
+      });
+    },
+    createLobby(event) {
+      this.$socket.sendObj({
+        type: "PlayerCreateGame",
+        publik: true
+      });
     }
+  },
+  mounted() {
+    this.$connect();
   }
 };
 </script>
@@ -55,6 +83,7 @@ export default {
       display: block;
       height: 4rem;
       position: relative;
+      margin-bottom: 2rem;
     }
 
     .input {
