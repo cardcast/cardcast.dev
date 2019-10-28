@@ -8,13 +8,16 @@
           <input
             @change="checkRoom"
             type="number"
+            max="9999"
+            min="0"
+            onKeyDown="if(this.value.length==4 && event.keyCode>47 && event.keyCode < 58)return false;"
             class="input"
             id="input-1"
             placeholder="Enter code"
           />
         </label>
-      <b-button class="join-game-button btn" id="joinGame" variant="success">Join game</b-button>
-      <b-button class="join-game-button btn" id="joinGame" variant="success">Create game</b-button>
+      <b-button class="join-game button" id="joinGame" variant="success">Join game</b-button>
+      <b-button class="create-game button" id="createGame" variant="success">Create game</b-button>
       </div>
     </div>
   </div>
@@ -38,7 +41,7 @@ export default {
 @import "@/assets/styles/global.scss";
 @import "@/assets/styles/buttons.scss";
 
-.join-game-button{    
+.button{    
   margin-top: 20px;
   font-weight: bold;
   padding-left: 20px;
@@ -51,10 +54,11 @@ export default {
   border: none;
   border-radius: 10px;
   color: white;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
 }
 
-.btn{
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+.create-game{
+  width: 56%;
 }
 
 .join-game-button:hover{
@@ -84,6 +88,7 @@ export default {
     }
 
     .input {
+      width: 100%;
       border: none;
       border-radius: 5px;
       font-family: "Work Sans", sans-serif;
