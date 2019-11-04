@@ -16,12 +16,12 @@ export default new Router({
       component: Home
     },
     {
-      path: '/host',
+      path: '/host/:code',
       name: 'host',
       component: Host
     },
     {
-      path: '/game',
+      path: '/game/:code',
       name: 'game',
       component: Game
     },
