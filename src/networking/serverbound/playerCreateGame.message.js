@@ -4,6 +4,4 @@ export default class PlayerCreateGame {
         this.type = "PlayerCreateGame";
         this.publik = publik;
     }
-
-
 }

@@ -4,13 +4,16 @@
       <h1 class="center-block__header">Welcome to Cardcast</h1>
       <div class="center-block__input">
         <label>
+          <input type="number" class="input float-left" v-model="code" placeholder="Enter code" />
+        </label>
+        <label>
           <input
-            type="number"
-            max="9999"
-            min="0"
-            onkeydown="if(this.value.length==4 && event.keyCode !== 8 && event.keyCode !== 46){return false;} return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))"
+            type="text"
+            maxlength="32"
+            min="4"
             class="input float-left"
-            placeholder="Enter code"
+            placeholder="Enter username"
+            v-model="username"
           />
         </label>
         <b-button
@@ -44,7 +47,7 @@ export default {
       this.$store.dispatch("sendMessage", {
         message: new PlayerReadyUp(this.username, this.code),
         callback: result => {
-          console.log(result);
+          this.$router.push({ name: "game", params: { lobby: result.lobby } });
         }
       });
     },
@@ -52,7 +55,7 @@ export default {
       this.$store.dispatch("sendMessage", {
         message: new PlayerCreateGame(true),
         callback: result => {
-          console.log(result);
+          this.$router.push({ name: "host", params: { lobby: result.lobby } });
         }
       });
     }
