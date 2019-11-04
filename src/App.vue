@@ -40,16 +40,26 @@ export default {
   methods: {
     joinLobby(event) {
       event.preventDefault();
-      this.$socket.sendObj({
-        type: "PlayerReadyUp",
-        name: this.username,
-        code: this.code
+      this.$store.dispatch("sendMessage", {
+        message: {
+          type: "PlayerReadyUp",
+          name: this.username,
+          code: this.code
+        },
+        callback: result => {
+          console.log(result);
+        }
       });
     },
     createLobby(event) {
-      this.$socket.sendObj({
-        type: "PlayerCreateGame",
-        publik: true
+      this.$store.dispatch("sendMessage", {
+        message: {
+          type: "PlayerCreateGame",
+          publik: true
+        },
+        callback: result => {
+          console.log(result);
+        }
       });
     }
   },
