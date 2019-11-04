@@ -3,15 +3,13 @@
     <div class="center-block">
       <h1 class="center-block__header">Welcome to Cardcast</h1>
       <div class="center-block__input">
-        <label for="input-1">
+        <label>
           <input
-            @change="checkRoom"
             type="number"
             max="9999"
             min="0"
             onkeydown="if(this.value.length==4 && event.keyCode !== 8 && event.keyCode !== 46){return false;} return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))"
-            class="input"
-            id="input-1"
+            class="input float-left"
             placeholder="Enter code"
           />
         </label>
@@ -19,15 +17,17 @@
           class="join-game button"
           id="joinGame"
           variant="success"
-          @click.prevent="checkRoom()"
+          @click.prevent="joinLobby"
         >Join game</b-button>
-        <b-button class="create-game button" id="createGame" variant="success">Create game</b-button>
+        <b-button class="create-game button" @click="createGame" variant="success">Create game</b-button>
       </div>
     </div>
   </div>
 </template>
 <script>
 import store from "./../store/index";
+import PlayerCreateGame from "./../networking/serverbound/playerCreateGame.message";
+import PlayerReadyUp from "./../networking/serverbound/playerReadyUp.message";
 
 export default {
   name: "app",
@@ -42,22 +42,15 @@ export default {
     joinLobby(event) {
       event.preventDefault();
       this.$store.dispatch("sendMessage", {
-        message: {
-          type: "PlayerReadyUp",
-          name: this.username,
-          code: this.code
-        },
+        message: new PlayerReadyUp(this.username, this.code),
         callback: result => {
           console.log(result);
         }
       });
     },
-    createLobby(event) {
+    createGame() {
       this.$store.dispatch("sendMessage", {
-        message: {
-          type: "PlayerCreateGame",
-          publik: true
-        },
+        message: new PlayerCreateGame(true),
         callback: result => {
           console.log(result);
         }
