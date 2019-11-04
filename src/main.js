@@ -18,7 +18,7 @@ Vue.use(VueNativeSock, 'ws://localhost:6969/game', {
     if (!eventName.startsWith('SOCKET_')) { return }
     let method = 'commit'
     let target = eventName.toUpperCase()
-    let msg = event
+    let msg = event;
     if (this.format === 'json' && event.data) {
       msg = JSON.parse(event.data)
       if (msg.mutation) {
@@ -28,7 +28,7 @@ Vue.use(VueNativeSock, 'ws://localhost:6969/game', {
         target = [msg.namespace || '', msg.action].filter((e) => !!e).join('/')
       }
     }
-    this.store[method](target, msg)
+    this.store[method]("SOCKET_ONMESSAGE", msg)
   }
 });
 

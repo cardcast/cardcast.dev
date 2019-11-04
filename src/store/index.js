@@ -24,10 +24,10 @@ export default new Vuex.Store({
       console.error(state, event)
     },
     SOCKET_ONMESSAGE(state, message) {
-      console.log(message);
-      if (state.pendingMessages.filter(pendingMessage => pendingMessage.trackingId === message.trackingId)) {
-        pendingMessage.callback();
-      }
+      state.socket.pendingMessages.filter(pendingMessage => pendingMessage.trackingId === message.trackingId).forEach(function (value, index) {
+        value.callback(message);
+      });
+
       state.socket.message = message
     },
     SOCKET_RECONNECT(state, count) {
@@ -37,8 +37,9 @@ export default new Vuex.Store({
       state.socket.reconnectError = true;
     },
     SEND_MESSAGE(state, request) {
-      request.trackingId = 69420;
-      request.message.trackingId = 69420;
+      const trackingId = Math.floor(Math.random() * 100000000);
+      request.trackingId = trackingId;
+      request.message.trackingId = trackingId;
       state.socket.pendingMessages.push(request);
       Vue.prototype.$socket.sendObj(request.message)
     }
