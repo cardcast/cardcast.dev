@@ -51,7 +51,8 @@ export default {
   font-size: 24px;
   float: right;
   background-color: #FF8463;
-  border: none;
+  border: solid 2px;
+  border-color: #FF8463;
   border-radius: 10px;
   color: white;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
@@ -61,8 +62,16 @@ export default {
   width: 56%;
 }
 
-.join-game-button:hover{
+.button:hover{
   background-color: rgb(255, 158, 131);
+  cursor: pointer;
+}
+
+.button:focus{
+  outline: none;
+  border-color: rgb(255, 158, 131);
+  background-color: #FF8463;  
+  cursor: default;
 }
 
 #app {
