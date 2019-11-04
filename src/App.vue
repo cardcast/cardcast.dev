@@ -10,13 +10,13 @@
             type="number"
             max="9999"
             min="0"
-            onKeyDown="if(this.value.length==4 && event.keyCode>47 && event.keyCode < 58)return false;"
+            onkeydown="if(this.value.length==4 && event.keyCode !== 8 && event.keyCode !== 46){return false;} return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))"
             class="input"
             id="input-1"
             placeholder="Enter code"
           />
         </label>
-      <b-button class="join-game button" id="joinGame" variant="success">Join game</b-button>
+      <b-button class="join-game button" id="joinGame" variant="success" @click.prevent="checkRoom()">Join game</b-button>
       <b-button class="create-game button" id="createGame" variant="success">Create game</b-button>
       </div>
     </div>
