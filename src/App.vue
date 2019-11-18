@@ -1,7 +1,26 @@
 <template>
   <div id="app">
-    <div class="app-content container">
-      <router-view/>
-    </div>
+    <Navigation />
+    <router-view />
   </div>
-</template>
+</template> 
+
+<script>
+import Navigation from "@/components/layout/Navigation.vue";
+
+export default {
+  components: {
+    Navigation
+  }
+};
+</script>
+
+<style lang="scss">
+@import "@/assets/styles/global.scss";
+@import "@/assets/styles/buttons.scss";
+
+#app {
+  background-color: #4254f4;
+  height: 100%;
+}
+</style>
