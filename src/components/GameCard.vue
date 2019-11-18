@@ -1,6 +1,10 @@
 <template>
   <div class="playing-card">
-    <div class="playing-card__body" v-bind:style="{ backgroundImage: `url(${imageName})` }"></div>
+    <div
+      class="playing-card__body"
+      v-bind:style="{ backgroundImage: `url(${imageName})` }"
+      v-on:dblclick="$emit('play')"
+    ></div>
   </div>
 </template>
 

@@ -6,7 +6,13 @@
 
     <div class="hand">
       <div class="hand__body">
-        <game-card v-for="(card, index) in cards" :key="index" :suit="card.suit" :rank="card.rank" />
+        <game-card
+          v-for="(card, index) in cards"
+          :key="index"
+          :suit="card.suit"
+          :rank="card.rank"
+          @play="log"
+        />
       </div>
     </div>
   </div>
@@ -48,6 +54,11 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    log() {
+      
+    }
   }
 };
 </script>
