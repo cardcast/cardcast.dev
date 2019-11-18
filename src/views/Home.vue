@@ -1,7 +1,7 @@
 <template>
-  <b-container>
-    <b-row>
-      <div class="m-auto">
+  <b-container class="h-100 d-flex">
+    <b-row class="m-auto"> 
+      <div class="">
         <h1 class="center-block__header">Welcome to Cardcast</h1>
         <div class="center-block__input">
           <b-input-group size="sm" prepend="Username">
@@ -69,6 +69,7 @@ export default {
 <style lang="scss">
 .center-block {
   &__header {
+    font-family: Calistoga, sans-serif;
     color: white;
     text-align: center;
     margin-bottom: 1rem;
