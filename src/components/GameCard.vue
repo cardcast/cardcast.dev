@@ -1,19 +1,31 @@
 <template>
-    <button v-on:click="count++">You clicked me {{ count }} times.</button>
+  <div class="playing-card">
+    <div class="playing-card__body" v-bind:style="{ backgroundImage: `url(${imageName})` }"></div>
+  </div>
 </template>
 
 <script>
 export default {
-  data () {
-    return {
-      suit: 0,
-      rank: 0,
-      count: 0
-    }
+  data() {
+    return {};
   },
-  methods: {
-    select () {
+  props: ["suit", "rank"],
+  computed: {
+    imageName() {
+      // return `${this.suit}.${this.rank}.svg`;
+      return "/cards/2_of_clubs.svg";
     }
   }
-}
+};
 </script>
+<style lang="scss">
+.playing-card {
+  &__body {
+    height: 250px;
+    width: 172px;
+
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+}
+</style>
