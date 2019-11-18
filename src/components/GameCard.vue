@@ -12,14 +12,14 @@ export default {
   props: ["suit", "rank"],
   computed: {
     imageName() {
-      // return `${this.suit}.${this.rank}.svg`;
-      return "/cards/2_of_clubs.svg";
+      return `/cards/${this.rank}.${this.suit}.svg`;
     }
   }
 };
 </script>
 <style lang="scss">
 .playing-card {
+  float: left;
   &__body {
     height: 250px;
     width: 172px;

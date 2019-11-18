@@ -2,7 +2,12 @@
   <div>
     <div class="stack">
       <div class="stack__body">
-        <game-card suit="3" rank="3"/>
+        <game-card
+          v-for="(card, index) in cards"
+          :key="index"
+          :suit="card.suit"
+          :rank="card.rank"
+        />
       </div>
     </div>
 
@@ -21,7 +26,44 @@ export default {
   data() {
     return {
       code: this.$route.params.code,
-      cards: []
+      cards: [
+        {
+          suit: "s",
+          rank: "13"
+        },
+        {
+          suit: "d",
+          rank: "3"
+        },
+        {
+          suit: "s",
+          rank: "8"
+        },
+        {
+          suit: "c",
+          rank: "2"
+        },
+        {
+          suit: "r",
+          rank: "15"
+        },
+        {
+          suit: "b",
+          rank: "15"
+        },
+        {
+          suit: "",
+          rank: ""
+        },
+        {
+          suit: "",
+          rank: ""
+        },
+        {
+          suit: "",
+          rank: ""
+        }
+      ]
     };
   }
 };
