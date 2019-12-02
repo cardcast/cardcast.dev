@@ -11,7 +11,7 @@
           :key="index"
           :suit="card.suit"
           :rank="card.rank"
-          @play="log"
+          @play="playCard(card)"
         />
       </div>
     </div>
@@ -19,6 +19,7 @@
 </template>
 <script>
 import GameCard from "../components/GameCard.vue";
+import PlayerPlayCard from "../networking/serverbound/playerPlayCard.message";
 
 export default {
   components: {
@@ -56,8 +57,13 @@ export default {
     };
   },
   methods: {
-    log() {
-      
+    playCard(card) {
+      this.$store.dispatch("sendMessage", {
+        message: new PlayerPlayCard(card),
+        callback: result => {
+
+        }
+      });
     }
   }
 };
