@@ -60,9 +60,7 @@ export default {
     playCard(card) {
       this.$store.dispatch("sendMessage", {
         message: new PlayerPlayCard(card),
-        callback: result => {
-
-        }
+        callback: result => {}
       });
     }
   }
@@ -78,19 +76,21 @@ export default {
     margin-top: auto;
     margin-bottom: 20px;
     &__body {
+      
       .playing-card {
         width: 40px;
-        &:last-child {
-          width: auto;
-        }
         transition: all 0.2s;
-        transition-delay: 0.42s;
+        transition-delay: 0.2s;
 
         &:hover {
           margin-top: -70px;
-          transition: all 0.1s ease-in;
-          transition-delay: 0.2s;
+          transition: all 0.2s ease-in;
+          transition-delay: 0.42s;
         }
+        
+        &:last-child {
+          width: auto;
+        }      
       }
     }
   }
