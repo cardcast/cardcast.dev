@@ -44,14 +44,6 @@ export default {
         {
           suit: "c",
           rank: "2"
-        },
-        {
-          suit: "r",
-          rank: "15"
-        },
-        {
-          suit: "b",
-          rank: "15"
         }
       ]
     };
@@ -59,7 +51,7 @@ export default {
   methods: {
     playCard(card) {
       this.$store.dispatch("sendMessage", {
-        message: new PlayerPlayCard(card),
+        message: new PlayerPlayCard(`${card.suit} ${card.rank}`),
         callback: result => {}
       });
     }
@@ -76,7 +68,6 @@ export default {
     margin-top: auto;
     margin-bottom: 20px;
     &__body {
-      
       .playing-card {
         width: 40px;
         transition: all 0.2s;
@@ -87,10 +78,10 @@ export default {
           transition: all 0.2s ease-in;
           transition-delay: 0.42s;
         }
-        
+
         &:last-child {
           width: auto;
-        }      
+        }
       }
     }
   }
