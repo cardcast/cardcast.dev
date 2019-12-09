@@ -50,22 +50,26 @@ export default {
       this.$store.dispatch("sendMessage", {
         message: new PlayerReadyUp(this.username, this.code),
         callback: result => {
-          this.$router.push({
-            name: "game",
-            params: { code: result.lobby.code }
-          });
+          if (!result.lobby) {
+            console.log("error while getting game");
+          } else {
+            const lobby = result.lobby;
+            this.$router.push({
+              name: "game",
+              params: { code: lobby.code }
+            });
+          }
         }
       });
       this.$router.push({
         name: "game",
-        params: { code: 1232}
+        params: { code: 1232 }
       });
     },
     createGame() {
       this.$store.dispatch("sendMessage", {
         message: new PlayerCreateGame(true),
         callback: result => {
-          console.log(result.lobby);
           this.$router.push({
             name: "host",
             params: { code: result.lobby.code }
