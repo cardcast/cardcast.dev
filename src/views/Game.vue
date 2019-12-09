@@ -6,12 +6,12 @@
 
     <div class="hand">
       <div class="hand__body">
-        <game-card 
+        <game-card
           v-for="(card, index) in cards"
           :key="index"
           :suit="card.suit"
           :rank="card.rank"
-          @click.native="play(card.suit, card.rank)"
+          @click.native="play(card)"
           @play="log"
         />
       </div>
@@ -56,14 +56,15 @@ export default {
       ]
     };
   },
-  methods: {  
-    play: function (suit, rank){
-      alert("Suit: " + suit + " Rank: " + rank)
+  methods: {
+    play: function(card) {
+      var index = this.cards.indexOf(card);
+      setInterval(() => {
+        this.cards.splice(index);
+      }, 1500);
     },
 
-    log() {
-      
-    }
+    log() {}
   }
 };
 </script>
