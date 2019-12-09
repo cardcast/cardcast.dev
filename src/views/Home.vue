@@ -60,7 +60,6 @@ export default {
       this.$store.dispatch("sendMessage", {
         message: new PlayerCreateGame(true),
         callback: result => {
-          console.log(result);
           this.$router.push({
             name: "host",
             params: { code: result.lobby.code }

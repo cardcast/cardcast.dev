@@ -60,7 +60,7 @@ export default new Vuex.Store({
       context.commit('SUBSCRIBE', {
         type: subscriptionRequest.type,
         callback: subscriptionRequest.callback
-      })
+      });
     }
   }
 })

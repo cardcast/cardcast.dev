@@ -58,9 +58,9 @@ export default {
       this.$store.dispatch("subscribe", {
         type: "playerPlayCard",
         callback: result => {
-
+          
         }
-      })
+      });
     }
   }
 };
