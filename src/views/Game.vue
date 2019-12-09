@@ -6,18 +6,21 @@
 
     <div class="hand">
       <div class="hand__body">
-        <game-card
-          v-for="(card, index) in cards"
-          :key="index"
-          :suit="card.suit"
-          :rank="card.rank"
-          @click.native="play(card)"
-          @play="log"
-        />
+         <transition-group name="list" tag="p">
+          <game-card transition-group name="list" tag="p" class="list-item"
+            v-for="(card) in cards"
+            :key="card"
+            :suit="card.suit"
+            :rank="card.rank"
+            @dblclick.native="play(card)"
+            @play="log"
+          />
+        </transition-group>
       </div>
     </div>
   </div>
 </template>
+
 <script>
 import GameCard from "../components/GameCard.vue";
 
@@ -59,16 +62,28 @@ export default {
   methods: {
     play: function(card) {
       var index = this.cards.indexOf(card);
-      setInterval(() => {
-        this.cards.splice(index);
-      }, 1500);
+      // setTimeout(() => {
+        this.cards.splice(index,1);
+      // }, 1500);
     },
-
     log() {}
   }
 };
 </script>
 <style lang="scss" scoped>
+
+.list-item {
+  display: inline-block;
+  margin-right: 10px;
+}
+.list-enter-active, .list-leave-active {
+  transition: all 1s;
+}
+.list-enter, .list-leave-to {
+  opacity: 0;
+  transform: translateY(-800px);
+}
+
 .game-screen {
   display: flex;
   justify-content: center;
