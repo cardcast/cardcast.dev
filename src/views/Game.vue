@@ -54,6 +54,13 @@ export default {
         message: new PlayerPlayCard(`${card.suit} ${card.rank}`),
         callback: result => {}
       });
+
+      this.$store.dispatch("subscribe", {
+        type: "playerPlayCard",
+        callback: result => {
+
+        }
+      })
     }
   }
 };
