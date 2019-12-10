@@ -26,8 +26,8 @@
 </template>
 <script>
 import store from "./../store/index";
-import PlayerCreateGame from "./../networking/serverbound/playerCreateGame.message";
-import PlayerReadyUp from "./../networking/serverbound/playerReadyUp.message";
+import UserCreateGame from "./../networking/serverbound/userCreateGame.message";
+import PlayerJoin from "./../networking/serverbound/playerJoin.message";
 
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
@@ -48,26 +48,26 @@ export default {
     joinLobby(event) {
       event.preventDefault();
       this.$store.dispatch("sendMessage", {
-        message: new PlayerReadyUp(this.username, this.code),
+        message: new PlayerJoin(this.username, this.code),
         callback: result => {
-          this.$router.push({
-            name: "game",
-            params: { code: result.lobby.code }
-          });
+          if (!result.lobby) {
+            console.log("error while getting game");
+          } else {
+            const lobby = result.lobby;
+            this.$router.push({
+              name: "game",
+              params: { code: lobby.code }
+            });
+          }
         }
-      });
-      this.$router.push({
-        name: "game",
-        params: { code: 1232}
       });
     },
     createGame() {
       this.$store.dispatch("sendMessage", {
-        message: new PlayerCreateGame(true),
+        message: new UserCreateGame(true),
         callback: result => {
-          console.log(result.lobby);
           this.$router.push({
-            name: "host",
+            name: "lobby",
             params: { code: result.lobby.code }
           });
         }

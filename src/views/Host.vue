@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <div class="container">
       <div class="row align-items-center">
         <div class="col">
@@ -20,14 +19,11 @@
         </div>
       </div>
     </div>
-
-
   </div>
 </template>
 <script>
 import CardStack from "../components/CardStack.vue";
 import CardDeck from "../components/CardDeck.vue";
-
 export default {
   data() {
     return {
@@ -48,7 +44,6 @@ export default {
   font-size: 30px;
   color: white;
 }
-
 p{
   font-size: 30px;
   color: white;

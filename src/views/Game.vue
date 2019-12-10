@@ -24,8 +24,8 @@
       </div>
       <div class="row">
         <b-btn variant="succes" :disabled="!yourTurn" v-on:click="draw">Draw</b-btn>
-        <b-btn variant="succes" v-on:click="setPlayerTurn">kutding</b-btn>
-        <!-- tijdelijk voor testing, normaal van serer-->
+        <b-btn variant="succes" v-on:click="setPlayerTurn">testknop</b-btn>
+        <!-- tijdelijk voor testing, normaal van server-->
       </div>
     </div>
   </div>
@@ -173,16 +173,17 @@ export default {
     &__body {
       .playing-card {
         width: 40px;
-        &:last-child {
-          width: auto;
-        }
         transition: all 0.2s;
-        transition-delay: 0.42s;
+        transition-delay: 0.2s;
 
         &:hover {
           margin-top: -70px;
-          transition: all 0.1s ease-in;
-          transition-delay: 0.2s;
+          transition: all 0.2s ease-in;
+          transition-delay: 0.42s;
+        }
+
+        &:last-child {
+          width: auto;
         }
         &:active {
           margin-top: -70px;

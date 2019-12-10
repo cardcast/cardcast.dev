@@ -3,7 +3,7 @@
     <router-view />
     <notifications group="game" />
   </div>
-</template> 
+</template>
 
 <script>
 import Navigation from "@/components/layout/Navigation.vue";
