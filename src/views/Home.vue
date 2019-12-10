@@ -57,7 +57,7 @@ export default {
         callback: result => {
           console.log(result.lobby);
           this.$router.push({
-            name: "host",
+            name: "lobby",
             params: { code: result.lobby.code }
           });
         }
