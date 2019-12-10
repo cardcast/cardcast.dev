@@ -74,14 +74,7 @@ export default {
       domain: '',
       code: this.$route.params.code,
       players: [
-        {id: 1, name: "Alfred"},
-        {id: 2, name: "Wilfred"},
-        {id: 3, name: "Fred"},
-        {id: 4, name: "Nelson"},
-        {id: 5, name: "Alfred"},
-        {id: 6, name: "Wilfred"},
-        {id: 7, name: "Fred"},
-        {id: 8, name: "Nelson"}
+    
       ]
     };
   },  
@@ -145,6 +138,13 @@ export default {
     this.placeDivs();
     this.autoPlaceDivs()    
     window.addEventListener('resize', this.onResize);
+
+    this.$store.dispatch("subscribe", {
+      type:'HB_PlayerJoinedGame',
+      callback: (result) => {
+          this.players.push(result.player);
+      }
+    })
   },
   beforeDestroy: function () {
     window.removeEventListener('resize', this.onResize)
