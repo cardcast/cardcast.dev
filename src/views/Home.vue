@@ -71,7 +71,7 @@ export default {
         message: new PlayerCreateGame(true),
         callback: result => {
           this.$router.push({
-            name: "host",
+            name: "lobby",
             params: { code: result.lobby.code }
           });
         }

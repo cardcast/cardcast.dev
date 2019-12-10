@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Host from './views/Host.vue'
 import Game from './views/Game.vue'
+import Lobby from './views/Lobby.vue'
 
 Vue.use(Router)
 
@@ -14,6 +15,11 @@ export default new Router({
       path: '/',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/lobby/:code',
+      name: 'lobby',
+      component: Lobby
     },
     {
       path: '/host/:code',
