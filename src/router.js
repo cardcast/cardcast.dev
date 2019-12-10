@@ -24,11 +24,6 @@ export default new Router({
       path: '/game/:code',
       name: 'game',
       component: Game
-    },
-    {
-      path: '/gameclient',
-      name: 'gameclient',
-      component: () => import('./views/GameClient.vue')
     }
   ]
 })

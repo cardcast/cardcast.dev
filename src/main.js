@@ -13,6 +13,10 @@ Vue.use(BootstrapVue);
 import VueNativeSock from 'vue-native-websocket'
 import store from './store/index'
 
+import Notifications from 'vue-notification' 
+Vue.use(Notifications)
+
+
 Vue.use(VueNativeSock, 'ws://localhost:6969/game', {
   store: store,
   format: 'json',

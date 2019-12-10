@@ -3,7 +3,6 @@
     <div
       class="playing-card__body"
       v-bind:style="{ backgroundImage: `url(${imageName})` }"
-      v-on:dblclick="$emit('play')"
     ></div>
   </div>
 </template>
@@ -16,7 +15,7 @@ export default {
   props: ["suit", "rank"],
   computed: {
     imageName() {
-      return `/cards/${this.rank}.${this.suit}.svg`;
+      return `/cards/cardback.svg`;
     }
   }
 };
