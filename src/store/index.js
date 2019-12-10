@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     socket: {
       pendingMessages: [],
+      subsriptions: [],
       isConnected: false,
       message: '',
       reconnectError: false,
@@ -28,6 +29,10 @@ export default new Vuex.Store({
         value.callback(message);
       });
 
+      state.socket.subsriptions.filter(subscription => subscription.type === message.type).forEach(function (value, index) {
+        value.callback(message);
+      });
+
       state.socket.message = message
     },
     SOCKET_RECONNECT(state, count) {
@@ -42,11 +47,20 @@ export default new Vuex.Store({
       request.message.trackingId = trackingId;
       state.socket.pendingMessages.push(request);
       Vue.prototype.$socket.sendObj(request.message)
+    },
+    SUBSCRIBE(state, request) {
+      state.socket.subsriptions.push(request);
     }
   },
   actions: {
     sendMessage: function (context, request) {
       context.commit('SEND_MESSAGE', { message: request.message, callback: request.callback });
+    },
+    subscribe: function (context, subscriptionRequest) {
+      context.commit('SUBSCRIBE', {
+        type: subscriptionRequest.type,
+        callback: subscriptionRequest.callback
+      });
     }
   }
 })
