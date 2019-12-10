@@ -192,13 +192,14 @@ body{
         }
       }
       .code-p{
-      flex: 1 1 auto;
-      width: 100%;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-        p{
+        flex: 1 1 auto;
+        width: 100%;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        p{          
+          color: black;
           font-size: 1.5rem;
           font-weight: 500;
           font-family: Ubuntu;
