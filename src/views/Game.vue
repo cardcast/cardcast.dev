@@ -23,8 +23,8 @@
         </div>
       </div>
       <div class="row">
-        <b-btn variant="succes" :disabled="!yourTurn" v-on:click="draw">Draw</b-btn>
-        <b-btn variant="succes" v-on:click="fixYourTurn">kutding</b-btn>
+        <b-btn variant="succes" :disabled="!yourTurn" v-on:click="draw" >Draw</b-btn>
+        <b-btn variant="succes" v-on:click="setPlayerTurn">kutding</b-btn> <!-- tijdelijk voor testing, normaal van serer-->
       </div>
     </div>
   </div>
@@ -34,6 +34,7 @@
 import GameCard from "../components/GameCard.vue";
 import PlayerDrawCard from "../networking/serverbound/playerDrawCard.message";
 import PlayerPlayCard from "../networking/serverbound/playerPlayCard.message";
+
 import store from "./../store/index";
 export default {
   components: {
@@ -43,7 +44,6 @@ export default {
     return {
       code: this.$route.params.code,
       yourTurn: true,
-      index: 0,
       cards: [
         {
           suit: "s",
@@ -102,12 +102,12 @@ export default {
       });
       this.yourTurn = false;
     },
-    fixYourTurn: function() {
+    setPlayerTurn: function() {
       this.yourTurn = true;
     }
   },
   mounted() {
-    this.$connect();
+    this.$connect(); //todo removee ik ben lui sorry
   }
 };
 </script>
