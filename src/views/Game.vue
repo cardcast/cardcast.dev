@@ -6,14 +6,14 @@
     <div class="row">
       <div class="hand">
         <div class="hand__body">
-          <transition-group name="list" tag="p">
+          <transition-group name="list" tag="div">
             <game-card
               transition-group
               name="list"
               tag="p"
               class="list-item"
               v-for="(card) in cards "
-              :key="card.suit + card.rank"
+              :key="card.suit + card.rank + card.id"
               :suit="card.suit"
               :rank="card.rank"
               @dblclick.native="play(card)"
@@ -23,8 +23,9 @@
         </div>
       </div>
       <div class="row">
-        <b-btn variant="succes" :disabled="!yourTurn" v-on:click="draw" >Draw</b-btn>
-        <b-btn variant="succes" v-on:click="setPlayerTurn">kutding</b-btn> <!-- tijdelijk voor testing, normaal van serer-->
+        <b-btn variant="succes" :disabled="!yourTurn" v-on:click="draw">Draw</b-btn>
+        <b-btn variant="succes" v-on:click="setPlayerTurn">kutding</b-btn>
+        <!-- tijdelijk voor testing, normaal van serer-->
       </div>
     </div>
   </div>
@@ -46,26 +47,32 @@ export default {
       yourTurn: true,
       cards: [
         {
+          id:"091730",
           suit: "s",
           rank: "13"
         },
         {
+          id:"809235",
           suit: "d",
           rank: "3"
         },
         {
+          id:"742908",
           suit: "s",
           rank: "8"
         },
         {
+          id:"145682",
           suit: "c",
           rank: "2"
         },
         {
+          id:"123123",
           suit: "r",
           rank: "15"
         },
         {
+          id:"091284",
           suit: "b",
           rank: "15"
         }
@@ -77,37 +84,65 @@ export default {
       if (!this.yourTurn) {
         return;
       }
+      this.yourTurn = false;
       var index = this.cards.indexOf(card);
       this.cards.splice(index, 1);
       this.$store.dispatch("sendMessage", {
-        message: new PlayerPlayCard(card)
+        message: new PlayerPlayCard(`${card.id} ${card.suit} ${card.rank}`),
+        callback: result => {
+          if (result) {
+            return;
+          } else {
+            this.cards.splice(index, 0, card);
+            this.yourTurn = true;
+          }
+        }
       });
-      this.yourTurn = false;
     },
     log() {},
     draw: function() {
+      this.yourTurn = false;
       this.$store.dispatch("sendMessage", {
         message: new PlayerDrawCard(),
         callback: result => {
-          this.cards.push({
-            suit: result.suit,
-            rank: result.rank
+          result.array.forEach(card => {
+            this.cards.push({
+              id: Math.floor(Math.random() * 1000000),
+              suit: card.suit,
+              rank: card.rank
+            });
           });
-          this.yourTurn = false;
         }
       });
       this.cards.push({
+        id: Math.floor(Math.random() * 1000000),
         suit: "d",
         rank: "5"
       });
-      this.yourTurn = false;
     },
     setPlayerTurn: function() {
       this.yourTurn = true;
     }
   },
   mounted() {
-    this.$connect(); //todo removee ik ben lui sorry
+    this.$store.dispatch("subscribe", {
+      type: "CB_PlayerTurn",
+      callback: result => {
+        this.yourTurn = result;
+      }
+    });
+    this.$store.dispatch("subscribe", {
+      type: "CB_HostStartGame",
+      callback: result => {
+        result.array.forEach(card => {
+          this.cards.push({
+            id: Math.floor(Math.random() * 1000000),
+            suit: card.suit,
+            rank: card.rank
+          });
+        });
+      }
+    });
   }
 };
 </script>

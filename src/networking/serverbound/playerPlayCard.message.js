@@ -1,7 +1,8 @@
 export default class PlayerPlayCard {
 
-    constructor(card) {
-        this.type = "PlayerPlayCard";
-        this.card = card;
+    constructor(id,suit,rank) {
+        this.id = id,
+        this.suit = suit,
+        this.rank = rank
     }
 }
