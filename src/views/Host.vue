@@ -1,22 +1,20 @@
 <template>
-  <div>
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col">
-          <div class="code">
-            <h2>Code</h2>
-            <p>{{this.code}}</p>
-          </div>
+  <div class="container h-100">
+    <div class="row align-items-center h-100">
+      <div class="col">
+        <div class="code">
+          <h2>Code</h2>
+          <p>{{this.code}}</p>
         </div>
-        <div class="col-6">
-          <div class="row d-flex justify-content-center">
-            <game-card :rank="stack.rank" :suit="stack.suit" />
-            <game-card class="ml-4" rank="CARD" suit="BACK" />
-          </div>
+      </div>
+      <div class="col-6">
+        <div class="row d-flex justify-content-center">
+          <game-card :rank="stack.rank" :suit="stack.suit" />
+          <game-card class="ml-4" rank="CARD" suit="BACK" />
         </div>
-        <div class="col">
-          <p>{{currentTurn.name}}'s turn</p>
-        </div>
+      </div>
+      <div class="col">
+        <p>{{currentTurn.name}}'s turn</p>
       </div>
     </div>
   </div>
