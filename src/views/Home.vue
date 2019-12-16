@@ -5,7 +5,7 @@
     <b-row class="m-auto">
       <div class="desktop d-none d-lg-block">
         <div class="header">
-          <h1 class="center-block__header">Welcome to Cardcast!</h1>
+          <h1 class="center-block__header">Welcome to CardCast!</h1>
         </div>
         <div class="body">
           <div class="center-block__input inputs">

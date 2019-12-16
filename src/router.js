@@ -17,11 +17,6 @@ export default new Router({
       component: Home
     },
     {
-      path: '/:code',
-      name: 'home',
-      component: Home
-    },
-    {
       path: '/lobby/:code',
       name: 'lobby',
       component: Lobby
@@ -35,6 +30,11 @@ export default new Router({
       path: '/game/:code',
       name: 'game',
       component: Game
+    },
+    {
+      path: '/:code',
+      name: 'home',
+      component: Home
     }
   ]
 })
