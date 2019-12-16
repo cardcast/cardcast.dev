@@ -134,7 +134,7 @@ export default {
     this.$store.dispatch("subscribe", {
       type: "CB_HostStartGame",
       callback: result => {
-        result.array.forEach(card => {
+        result.cards.forEach(card => {
           this.cards.push({
             id: Math.floor(Math.random() * 1000000),
             suit: card.suit,
