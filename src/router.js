@@ -30,6 +30,11 @@ export default new Router({
       path: '/game/:code',
       name: 'game',
       component: Game
+    },
+    {
+      path: '/:code',
+      name: 'home',
+      component: Home
     }
   ]
 })

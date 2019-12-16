@@ -1,5 +1,5 @@
 <template>
-  <div class="player">
+  <div class="player" style="top: auto; left: auto;">
     <div class="name">
       {{player.name}}
     </div>
@@ -20,6 +20,7 @@ export default {
 </script>
 <style lang="scss">
 .player{
+    opacity: 0;
     z-index: 1;
     position: absolute;
     height: auto;
@@ -30,7 +31,7 @@ export default {
     font-size: 2rem;
     font-weight: 500;
     font-family: ubuntu;
-    transition: 20s;
+    transition: all 20s, opacity 0.3s ease;
     .name{
         z-index: 2;
     }
