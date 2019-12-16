@@ -3,7 +3,7 @@
     <b-row class="main-row">
       <b-col cols="12" lg="3" class="code-col d-none d-lg-block">
         <div class="code-div">
-          <h1>Bullying Game</h1>
+          <h1>CardCast</h1>
           <div class="code-span">
             <span>{{this.$route.params.code}}</span>
           </div>
@@ -14,7 +14,7 @@
       </b-col>
       <b-col cols="12" lg="3" class="code-col mobile-col d-block d-lg-none">
         <div class="code-div">
-          <h1>Bullying Game</h1>
+          <h1>CardCast</h1>
           <div class="code-span">
             <span>{{this.$route.params.code}}</span>
           </div>

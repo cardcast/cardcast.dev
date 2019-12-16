@@ -17,6 +17,11 @@ export default new Router({
       component: Home
     },
     {
+      path: '/:code',
+      name: 'home',
+      component: Home
+    },
+    {
       path: '/lobby/:code',
       name: 'lobby',
       component: Lobby
