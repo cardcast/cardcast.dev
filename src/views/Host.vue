@@ -10,8 +10,8 @@
         </div>
         <div class="col-6">
           <div class="row d-flex justify-content-center">
-            <game-card  :rank="stack.rank" :suit="stack.suit"  />
-            <game-card  class="ml-4" rank="CARD" suit="BACK"  />
+            <game-card :rank="stack.rank" :suit="stack.suit" />
+            <game-card class="ml-4" rank="CARD" suit="BACK" />
           </div>
         </div>
         <div class="col">
@@ -26,6 +26,8 @@ import CardStack from "../components/CardStack.vue";
 import CardDeck from "../components/CardDeck.vue";
 import GameCard from "../components/GameCard.vue";
 
+import store from "./../store/index";
+
 export default {
   data() {
     return {
@@ -39,7 +41,16 @@ export default {
     CardDeck,
     GameCard
   },
-  mounted() {}
+  mounted() {
+    this.$store.dispatch("subscribe", {
+      type: "HB_PlayerPlayedCard",
+      callback: result => {
+        this.currentTurn = result.nextPlayer;
+        this.stack = result.card;
+          this.$forceUpdate();
+      }
+    });
+  }
 };
 </script>
 

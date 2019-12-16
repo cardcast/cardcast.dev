@@ -16,16 +16,15 @@
                   :suit="card.suit"
                   :rank="card.rank"
                   @dblclick.native="play(card)"
-                  @play="log"
                 />
               </transition-group>
             </div>
           </div>
         </b-col>
       </b-row>
-      
+
       <b-row class="bottom-row">
-        <b-col cols="12" lg="2" sm="6" xs="2" >
+        <b-col cols="12" lg="2" sm="6" xs="2">
           <div class="button">
             <b-button variant="danger">Leave</b-button>
           </div>
@@ -46,6 +45,7 @@ import PlayerDrawCard from "../networking/serverbound/playerDrawCard.message";
 import PlayerPlayCard from "../networking/serverbound/playerPlayCard.message";
 
 import store from "./../store/index";
+
 export default {
   components: {
     GameCard
@@ -65,15 +65,15 @@ export default {
       }
       this.yourTurn = false;
       var index = this.cards.indexOf(card);
-      this.cards.splice(index, 1);
       this.$store.dispatch("sendMessage", {
         message: new PlayerPlayCard(`${card.suit} ${card.rank}`),
         callback: result => {
-          if (result) {
-            return;
-          } else {
-            this.cards.splice(index, 0, card);
+          if (result.error) {
+            console.log(" error ");
             this.yourTurn = true;
+          } else {
+            this.cards.splice(index, 1);
+            this.yourTurn = false;
           }
         }
       });
@@ -97,9 +97,6 @@ export default {
         suit: "d",
         rank: "5"
       });
-    },
-    setPlayerTurn: function() {
-      this.yourTurn = true;
     }
   },
   mounted() {
@@ -107,6 +104,13 @@ export default {
       type: "CB_PlayerTurn",
       callback: result => {
         this.yourTurn = result;
+      }
+    });
+
+    this.$store.dispatch("subscribe", {
+      type: "CB_PlayersTurn",
+      callback: result => {
+        this.yourTurn = true;
       }
     });
 
