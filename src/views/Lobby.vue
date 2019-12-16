@@ -127,7 +127,7 @@ export default {
         callback: result => {
           this.$router.push({
             name: "host",
-            params: { code: this.code }
+            params: { code: this.code, stack: result.stack, currentTurn: result.firstTurn }
           });
         }
       });

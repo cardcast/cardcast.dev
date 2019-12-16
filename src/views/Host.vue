@@ -10,12 +10,12 @@
         </div>
         <div class="col-6">
           <div class="row d-flex justify-content-center">
-            <card-stack :suit="'s'" :rank="'13'" class="mr-5"></card-stack>
-            <card-deck></card-deck>
+            <game-card  :rank="stack.rank" :suit="stack.suit"  />
+            <game-card  class="ml-4" rank="CARD" suit="BACK"  />
           </div>
         </div>
         <div class="col">
-           <p>Player ...'s turn</p>
+          <p>{{currentTurn.name}}'s turn</p>
         </div>
       </div>
     </div>
@@ -24,17 +24,22 @@
 <script>
 import CardStack from "../components/CardStack.vue";
 import CardDeck from "../components/CardDeck.vue";
+import GameCard from "../components/GameCard.vue";
+
 export default {
   data() {
     return {
-      code: this.$route.params.code
+      code: this.$route.params.code,
+      stack: this.$route.params.stack[0],
+      currentTurn: this.$route.params.currentTurn
     };
   },
   components: {
     CardStack,
-    CardDeck
+    CardDeck,
+    GameCard
   },
-  
+  mounted() {}
 };
 </script>
 
@@ -44,7 +49,7 @@ export default {
   font-size: 30px;
   color: white;
 }
-p{
+p {
   font-size: 30px;
   color: white;
 }

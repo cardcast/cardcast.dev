@@ -1,9 +1,6 @@
 <template>
-  <div class="game-screen">
-    <div class="stack">
-      <div class="stack__body"></div>
-    </div>
-    <div class="row">
+  <div class="row">
+    <div v-if="started || true">
       <div class="hand">
         <div class="hand__body">
           <transition-group name="list" tag="div">
@@ -17,7 +14,6 @@
               :suit="card.suit"
               :rank="card.rank"
               @dblclick.native="play(card)"
-              @play="log"
             />
           </transition-group>
         </div>
@@ -27,6 +23,9 @@
         <b-btn variant="succes" v-on:click="setPlayerTurn">testknop</b-btn>
         <!-- tijdelijk voor testing, normaal van server-->
       </div>
+    </div>
+    <div v-else>
+      <h2>WAIT FOR START</h2>
     </div>
   </div>
 </template>
@@ -45,7 +44,8 @@ export default {
     return {
       code: this.$route.params.code,
       yourTurn: true,
-      cards: []
+      cards: [],
+      started: false
     };
   },
   methods: {
@@ -68,7 +68,6 @@ export default {
         }
       });
     },
-    log() {},
     draw: function() {
       this.yourTurn = false;
       this.$store.dispatch("sendMessage", {
@@ -100,11 +99,12 @@ export default {
         this.yourTurn = result;
       }
     });
-    
+
     this.$store.dispatch("subscribe", {
       type: "CB_HostStartGame",
       callback: result => {
         this.yourTurn = result.yourTurn;
+        this.started = true;
         result.cards.forEach(card => {
           this.cards.push({
             id: Math.floor(Math.random() * 1000000),
