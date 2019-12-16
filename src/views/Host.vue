@@ -47,7 +47,7 @@ export default {
       callback: result => {
         this.currentTurn = result.nextPlayer;
         this.stack = result.card;
-          this.$forceUpdate();
+        this.$forceUpdate();
       }
     });
   }

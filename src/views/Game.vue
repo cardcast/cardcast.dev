@@ -79,23 +79,14 @@ export default {
       });
     },
     draw: function() {
-      this.yourTurn = false;
       this.$store.dispatch("sendMessage", {
         message: new PlayerDrawCard(),
         callback: result => {
-          result.array.forEach(card => {
-            this.cards.push({
-              id: Math.floor(Math.random() * 1000000),
-              suit: card.suit,
-              rank: card.rank
-            });
+          result.cards.forEach(card => {
+            card.id = Math.floor(Math.random() * 1000000)
+            this.cards.push(card);
           });
         }
-      });
-      this.cards.push({
-        id: Math.floor(Math.random() * 1000000),
-        suit: "d",
-        rank: "5"
       });
     }
   },
