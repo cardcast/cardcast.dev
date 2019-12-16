@@ -26,12 +26,12 @@
       <b-row class="bottom-row">
         <b-col cols="12" lg="2" sm="6" xs="2">
           <div class="button">
-            <b-button variant="danger">Leave</b-button>
+            <b-button variant="danger" size="lg" to="/">Leave</b-button>
           </div>
         </b-col>
         <b-col cols="12" lg="2" sm="6" xs="2" offset-lg="8">
           <div class="button">
-            <b-button variant="success" :disabled="!yourTurn" v-on:click="draw">Draw</b-button>
+            <b-button variant="success" :disabled="!yourTurn" size="lg" v-on:click="draw">Draw</b-button>
           </div>
         </b-col>
       </b-row>
@@ -83,8 +83,9 @@ export default {
         message: new PlayerDrawCard(),
         callback: result => {
           result.cards.forEach(card => {
-            card.id = Math.floor(Math.random() * 1000000)
+            card.id = Math.floor(Math.random() * 1000000);
             this.cards.push(card);
+            this.yourTurn = false;
           });
         }
       });
