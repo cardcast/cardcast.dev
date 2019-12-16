@@ -45,9 +45,11 @@ export default {
     this.$store.dispatch("subscribe", {
       type: "HB_PlayerPlayedCard",
       callback: result => {
-        this.currentTurn = result.nextPlayer;
-        this.stack = result.card;
-        this.$forceUpdate();
+        setTimeout(() => {
+          this.currentTurn = result.nextPlayer;
+          this.stack = result.card;
+          this.$forceUpdate();
+        }, 500);
       }
     });
   }

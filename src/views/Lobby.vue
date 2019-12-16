@@ -3,7 +3,7 @@
     <b-row class="main-row">
       <b-col cols="12" lg="3" class="code-col d-none d-lg-block">
         <div class="code-div">
-          <h1>Bullying Game</h1>
+          <h1>CardCast</h1>
           <div class="code-span">
             <span>{{this.$route.params.code}}</span>
           </div>
@@ -14,7 +14,7 @@
       </b-col>
       <b-col cols="12" lg="3" class="code-col mobile-col d-block d-lg-none">
         <div class="code-div">
-          <h1>Bullying Game</h1>
+          <h1>CardCast</h1>
           <div class="code-span">
             <span>{{this.$route.params.code}}</span>
           </div>
@@ -71,21 +71,15 @@ export default {
       this.domain = window.location.host;
     },
     placeDivs() {
-      // collect all the divs
+      console.log('placing divs')
       var divs = document.getElementsByClassName("player");
-      // get window width and height
       var winWidth = document.getElementById("player-canvas").offsetWidth;
       var winHeight = document.getElementById("player-canvas").offsetHeight;
-
       var rowHeight = this.getOuterHeight(
         document.getElementById("player-row")
       );
-      console.log("test");
-      // shortcut! the current div in the list
       for (var i = 0; i < divs.length; i++) {
         var thisDiv = divs[i];
-        // update top and left position
-        //thisDiv.style.top = Math.random() * ((winHeight + row.offsetHeight) - row.offsetHeight) + row.offsetHeight - (divs[i].offsetHeight / 2) +"px";
         thisDiv.style.top =
           Math.round(
             this.getRandomNumber(
@@ -101,7 +95,33 @@ export default {
             )
           ) + "px";
       }
-      // function that returns a random number between a min and max
+    },
+    placeLastDiv() {
+      setTimeout(() => {
+        var divs = document.getElementsByClassName("player");
+        var winWidth = document.getElementById("player-canvas").offsetWidth;
+        var winHeight = document.getElementById("player-canvas").offsetHeight;
+        var rowHeight = this.getOuterHeight(
+          document.getElementById("player-row")
+        );
+        var thisDiv = divs[divs.length - 1];
+        console.log(divs);
+        thisDiv.style.top =
+          Math.round(
+            this.getRandomNumber(
+              rowHeight + thisDiv.offsetHeight / 2 + 15,
+              winHeight - thisDiv.offsetHeight / 2 - 15
+            )
+          ) + "px";
+        thisDiv.style.left =
+          Math.round(
+            this.getRandomNumber(
+              0 + thisDiv.offsetWidth,
+              winWidth - thisDiv.offsetWidth
+            )
+          ) + "px";
+        thisDiv.style.opacity = 1;
+      }, 5);
     },
     getRandomNumber(min, max) {
       return Math.random() * (max - min) + min;
@@ -143,6 +163,7 @@ export default {
       type: "HB_PlayerJoinedGame",
       callback: result => {
         this.players.push(result.player);
+        this.placeLastDiv();
       }
     });
   },
