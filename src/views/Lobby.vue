@@ -53,6 +53,8 @@
 </template>
 <script>
 import Player from "./Player";
+import HostStartGame from "../networking/serverbound/hostStartGame.message"
+
 export default {
   components: {
     Player
@@ -140,17 +142,15 @@ export default {
       this.placeDivs();
     },
     startGame() {
-      //   this.$store.dispatch("sendMessage", {
-      //     message: new HostStartGame(true),
-      //     callback: result => {
-      //       console.log(result);
-      this.$router.push({
-        name: "host",
-        params: { code: this.code }
+      this.$store.dispatch("sendMessage", {
+        message: new HostStartGame(true),
+        callback: result => {
+          this.$router.push({
+            name: "host",
+            params: { code: this.code, stack: result.stack, currentTurn: result.firstTurn }
+          });
+        }
       });
-      //     }
-      //   });
-      // }
     }
   },
   mounted() {

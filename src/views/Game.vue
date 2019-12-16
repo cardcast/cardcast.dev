@@ -1,33 +1,41 @@
 <template>
   <div class="game-screen">
-    <div class="stack">
-      <div class="stack__body"></div>
-    </div>
-    <div class="row">
-      <div class="hand">
-        <div class="hand__body">
-          <transition-group name="list" tag="div">
-            <game-card
-              transition-group
-              name="list"
-              tag="p"
-              class="list-item"
-              v-for="(card) in cards "
-              :key="card.suit + card.rank + card.id"
-              :suit="card.suit"
-              :rank="card.rank"
-              @dblclick.native="play(card)"
-              @play="log"
-            />
-          </transition-group>
-        </div>
-      </div>
-      <div class="row">
-        <b-btn variant="succes" :disabled="!yourTurn" v-on:click="draw">Draw</b-btn>
-        <b-btn variant="succes" v-on:click="setPlayerTurn">testknop</b-btn>
-        <!-- tijdelijk voor testing, normaal van server-->
-      </div>
-    </div>
+    <b-container fluid class="h-100">
+      <b-row class="main-row">
+        <b-col>
+          <div class="hand">
+            <div class="hand__body">
+              <transition-group name="list" tag="div">
+                <game-card
+                  transition-group
+                  name="list"
+                  tag="p"
+                  class="list-item"
+                  v-for="(card) in cards "
+                  :key="card.suit + card.rank + card.id"
+                  :suit="card.suit"
+                  :rank="card.rank"
+                  @dblclick.native="play(card)"
+                />
+              </transition-group>
+            </div>
+          </div>
+        </b-col>
+      </b-row>
+
+      <b-row class="bottom-row">
+        <b-col cols="12" lg="2" sm="6" xs="2">
+          <div class="button">
+            <b-button variant="danger" size="lg" to="/">Leave</b-button>
+          </div>
+        </b-col>
+        <b-col cols="12" lg="2" sm="6" xs="2" offset-lg="8">
+          <div class="button">
+            <b-button variant="success" :disabled="!yourTurn" size="lg" v-on:click="draw">Draw</b-button>
+          </div>
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
@@ -37,6 +45,7 @@ import PlayerDrawCard from "../networking/serverbound/playerDrawCard.message";
 import PlayerPlayCard from "../networking/serverbound/playerPlayCard.message";
 
 import store from "./../store/index";
+
 export default {
   components: {
     GameCard
@@ -45,38 +54,8 @@ export default {
     return {
       code: this.$route.params.code,
       yourTurn: true,
-      cards: [
-        {
-          id:"091730",
-          suit: "s",
-          rank: "13"
-        },
-        {
-          id:"809235",
-          suit: "d",
-          rank: "3"
-        },
-        {
-          id:"742908",
-          suit: "s",
-          rank: "8"
-        },
-        {
-          id:"145682",
-          suit: "c",
-          rank: "2"
-        },
-        {
-          id:"123123",
-          suit: "r",
-          rank: "15"
-        },
-        {
-          id:"091284",
-          suit: "b",
-          rank: "15"
-        }
-      ]
+      cards: [],
+      started: false
     };
   },
   methods: {
@@ -86,42 +65,30 @@ export default {
       }
       this.yourTurn = false;
       var index = this.cards.indexOf(card);
-      this.cards.splice(index, 1);
       this.$store.dispatch("sendMessage", {
-        message: new PlayerPlayCard(`${card.id} ${card.suit} ${card.rank}`),
+        message: new PlayerPlayCard(`${card.suit} ${card.rank}`),
         callback: result => {
-          if (result) {
-            return;
-          } else {
-            this.cards.splice(index, 0, card);
+          if (result.error) {
+            console.log(" error ");
             this.yourTurn = true;
+          } else {
+            this.cards.splice(index, 1);
+            this.yourTurn = false;
           }
         }
       });
     },
-    log() {},
     draw: function() {
-      this.yourTurn = false;
       this.$store.dispatch("sendMessage", {
         message: new PlayerDrawCard(),
         callback: result => {
-          result.array.forEach(card => {
-            this.cards.push({
-              id: Math.floor(Math.random() * 1000000),
-              suit: card.suit,
-              rank: card.rank
-            });
+          result.cards.forEach(card => {
+            card.id = Math.floor(Math.random() * 1000000);
+            this.cards.push(card);
+            this.yourTurn = false;
           });
         }
       });
-      this.cards.push({
-        id: Math.floor(Math.random() * 1000000),
-        suit: "d",
-        rank: "5"
-      });
-    },
-    setPlayerTurn: function() {
-      this.yourTurn = true;
     }
   },
   mounted() {
@@ -131,10 +98,20 @@ export default {
         this.yourTurn = result;
       }
     });
+
+    this.$store.dispatch("subscribe", {
+      type: "CB_PlayersTurn",
+      callback: result => {
+        this.yourTurn = true;
+      }
+    });
+
     this.$store.dispatch("subscribe", {
       type: "CB_HostStartGame",
       callback: result => {
-        result.array.forEach(card => {
+        this.yourTurn = result.yourTurn;
+        this.started = true;
+        result.cards.forEach(card => {
           this.cards.push({
             id: Math.floor(Math.random() * 1000000),
             suit: card.suit,
@@ -148,6 +125,39 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.bottom-row {
+  height: 150px;
+  background-color: #292929;
+  .code-link {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    margin-left: 25px;
+    span {
+      color: white;
+      font-family: Ubuntu;
+      font-size: 3rem;
+    }
+  }
+  .button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    button {
+      font-family: Ubuntu;
+      font-size: 2rem;
+      font-weight: 500;
+      height: 75px;
+      width: 200px;
+    }
+  }
+}
+.active {
+  background-color: #4caf50;
+}
+
 .list-item {
   display: inline-block;
   margin-right: 10px;
