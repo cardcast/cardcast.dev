@@ -45,38 +45,7 @@ export default {
     return {
       code: this.$route.params.code,
       yourTurn: true,
-      cards: [
-        {
-          id:"091730",
-          suit: "s",
-          rank: "13"
-        },
-        {
-          id:"809235",
-          suit: "d",
-          rank: "3"
-        },
-        {
-          id:"742908",
-          suit: "s",
-          rank: "8"
-        },
-        {
-          id:"145682",
-          suit: "c",
-          rank: "2"
-        },
-        {
-          id:"123123",
-          suit: "r",
-          rank: "15"
-        },
-        {
-          id:"091284",
-          suit: "b",
-          rank: "15"
-        }
-      ]
+      cards: []
     };
   },
   methods: {
@@ -88,7 +57,7 @@ export default {
       var index = this.cards.indexOf(card);
       this.cards.splice(index, 1);
       this.$store.dispatch("sendMessage", {
-        message: new PlayerPlayCard(`${card.id} ${card.suit} ${card.rank}`),
+        message: new PlayerPlayCard(`${card.suit} ${card.rank}`),
         callback: result => {
           if (result) {
             return;
@@ -131,9 +100,11 @@ export default {
         this.yourTurn = result;
       }
     });
+    
     this.$store.dispatch("subscribe", {
       type: "CB_HostStartGame",
       callback: result => {
+        this.yourTurn = result.yourTurn;
         result.cards.forEach(card => {
           this.cards.push({
             id: Math.floor(Math.random() * 1000000),
