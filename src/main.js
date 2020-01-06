@@ -17,7 +17,7 @@ import Notifications from 'vue-notification'
 Vue.use(Notifications)
 
 
-Vue.use(VueNativeSock, 'ws://145.93.145.252:6969/game', {
+Vue.use(VueNativeSock, 'ws://localhost:6969/game', {
   store: store,
   format: 'json',
   connectManually: true,
