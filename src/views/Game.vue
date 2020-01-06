@@ -3,6 +3,25 @@
     <b-container fluid class="h-100">
       <b-row class="main-row">
         <b-col>
+          <div v-if="!started" class="container">
+            <div class="row">
+              <div class="col d-flex justify-content-center">
+                <h1>Waiting for players...</h1>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col d-flex justify-content-center">
+                <b-img src="/kanye/kanye.jpg" fluid alt="Responsive image" width="500"></b-img>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col d-flex justify-content-center">
+                <transition mode="out-in" name="fade">
+                  <p class="quote" :key="quote">"{{quote}}" - Kanye West</p>
+                </transition>
+              </div>
+            </div>
+          </div>
           <div class="hand">
             <div class="hand__body">
               <transition-group name="list" tag="div">
@@ -31,7 +50,12 @@
         </b-col>
         <b-col cols="12" lg="2" sm="6" xs="2" offset-lg="8">
           <div class="button">
-            <b-button variant="success" :disabled="!yourTurn" size="lg" v-on:click="draw">Draw</b-button>
+            <b-button
+              variant="success"
+              :disabled="!yourTurn || !started"
+              size="lg"
+              v-on:click="draw"
+            >Draw</b-button>
           </div>
         </b-col>
       </b-row>
@@ -39,7 +63,9 @@
   </div>
 </template>
 
+
 <script>
+import axios from "axios";
 import GameCard from "../components/GameCard.vue";
 import PlayerDrawCard from "../networking/serverbound/playerDrawCard.message";
 import PlayerPlayCard from "../networking/serverbound/playerPlayCard.message";
@@ -56,7 +82,11 @@ export default {
       yourTurn: true,
       cards: [],
       started: false,
+      quote: ""
     };
+  },
+  created() {
+    this.generateQuote();
   },
   methods: {
     play: function(card) {
@@ -89,6 +119,16 @@ export default {
           });
         }
       });
+    },
+    generateQuote: function() {
+      axios
+        .get(`https://api.kanye.rest?format=text`)
+        .then(response => {
+          this.quote = response.data;
+        })
+        .catch(e => {
+          this.errors.push(e);
+        });
     }
   },
   mounted() {
@@ -98,14 +138,12 @@ export default {
         this.yourTurn = result;
       }
     });
-
     this.$store.dispatch("subscribe", {
       type: "CB_PlayersTurn",
       callback: result => {
         this.yourTurn = true;
       }
     });
-
     this.$store.dispatch("subscribe", {
       type: "CB_HostStartGame",
       callback: result => {
@@ -120,11 +158,23 @@ export default {
         });
       }
     });
+    this.$nextTick(function() {
+      window.setInterval(() => {
+        this.generateQuote();
+      }, 7000);
+    });
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.main-row {
+  color: white;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  text-align: center;
+}
+
 .bottom-row {
   height: 150px;
   background-color: #292929;
@@ -203,5 +253,21 @@ export default {
       }
     }
   }
+}
+
+.quote {
+  margin-top: 25px;
+  font-size: 24px;
+  font-style: italic;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
 }
 </style>
