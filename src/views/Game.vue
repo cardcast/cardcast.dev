@@ -55,7 +55,7 @@ export default {
       code: this.$route.params.code,
       yourTurn: true,
       cards: [],
-      started: false
+      started: false,
     };
   },
   methods: {
