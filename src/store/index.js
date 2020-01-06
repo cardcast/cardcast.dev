@@ -15,14 +15,20 @@ export default new Vuex.Store({
   },
   mutations: {
     SOCKET_ONOPEN(state, event) {
+      console.log(" DEPRECATED CHECK")
       Vue.prototype.$socket = event.currentTarget
-      state.socket.isConnected = true
+      state.socket.isConnected = true;
     },
     SOCKET_ONCLOSE(state, event) {
-      state.socket.isConnected = false
+      state.socket.isConnected = false;
+      console.log(Vue);
+      // this.$connect();
+
+      // reconnect here       localStorage.setItem('access_token', this.uuid);
     },
     SOCKET_ONERROR(state, event) {
       console.error(state, event)
+      console.log(Vue);
     },
     SOCKET_ONMESSAGE(state, message) {
       state.socket.pendingMessages.filter(pendingMessage => pendingMessage.trackingId === message.trackingId).forEach(function (value, index) {
