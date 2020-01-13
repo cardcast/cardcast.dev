@@ -33,7 +33,7 @@ function isUUID(uuid) {
 }
 
 
-Vue.use(VueNativeSock, `ws://145.93.146.45:6969/game${token}`, {
+Vue.use(VueNativeSock, `ws://localhost:6969/game${token}`, {
   store: store,
   format: 'json',
   connectManually: false,

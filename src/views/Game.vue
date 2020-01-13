@@ -174,15 +174,19 @@ export default {
         .catch(e => {
           this.errors.push(e);
         });
+    },
+    scrollHorizontally: function(e) {
+        e = window.event || e;
+        var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+        document.getElementsByClassName('hand')[0].scrollLeft -= (delta*40); // Multiplied by 40
+        console.log(
+        document.getElementsByClassName('hand')[0])
+        e.preventDefault();
     }
   },
   mounted() {
     var item = document.getElementsByClassName("hand")[0];
-
-    window.addEventListener("wheel", function(e) {
-      if (e.deltaY > 0) item.scrollLeft += 100;
-      else item.scrollLeft -= 100;
-    });
+    document.addEventListener('scroll', this.scrollHorizontally(e))
     this.$store.dispatch("subscribe", {
       type: "CB_PlayerWin",
       callback: result => {
@@ -304,6 +308,8 @@ export default {
     padding-right: 10%;
 
     .hand {
+      height: 490px;
+      padding-top: 70px;
       width: auto;
       overflow: auto;
       border-radius: 8px;
@@ -312,13 +318,12 @@ export default {
 
         .playing-card {
           width: 45px;
-          transition: all 0.2s;
-          transition-delay: 0.2s;
+          transition: all 0.1s;
 
           &:hover {
-            width: 264px;
+            margin-top: -70px;
             transition: all 0.2s ease-in;
-            //transition-delay: 0.42s;
+            transition-delay: 0.1s;
           }
 
           &:last-child {
