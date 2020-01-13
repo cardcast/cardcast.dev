@@ -2,34 +2,32 @@
   <div class="game-screen">
     <b-container fluid class="h-100">
       <b-row class="main-row">
-        <b-col>
+        <b-col class="hand-col">
           <div class="hand">
-            <div class="hand__body">
-              <transition-group name="list" tag="div">
-                <game-card
-                  transition-group
-                  name="list"
-                  tag="p"
-                  class="list-item"
-                  v-for="(card) in cards "
-                  :key="card.suit + card.rank + card.id"
-                  :suit="card.suit"
-                  :rank="card.rank"
-                  @dblclick.native="play(card)"
-                />
-              </transition-group>
-            </div>
+            <transition-group name="list" tag="div" class="hand__body">
+              <game-card
+                transition-group
+                name="list"
+                tag="p"
+                class="list-item"
+                v-for="(card) in cards "
+                :key="card.suit + card.rank + card.id"
+                :suit="card.suit"
+                :rank="card.rank"
+                @dblclick.native="play(card)"
+              />
+            </transition-group>
           </div>
         </b-col>
       </b-row>
 
       <b-row class="bottom-row">
-        <b-col cols="12" lg="2" sm="6" xs="2">
+        <b-col cols="12" lg="2" sm="6" xs="2" class="bottom-col">
           <div class="button">
             <b-button variant="danger" size="lg" to="/">Leave</b-button>
           </div>
         </b-col>
-        <b-col cols="12" lg="2" sm="6" xs="2" offset-lg="8">
+        <b-col cols="12" lg="2" sm="6" xs="2" offset-lg="8" class="bottom-col">
           <div class="button">
             <b-button variant="success" :disabled="!yourTurn" size="lg" v-on:click="draw">Draw</b-button>
           </div>
@@ -128,29 +126,20 @@ export default {
 .bottom-row {
   height: 150px;
   background-color: #292929;
-  .code-link {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    margin-left: 25px;
-    span {
-      color: white;
-      font-family: Ubuntu;
-      font-size: 3rem;
-    }
-  }
-  .button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    width: 100%;
-    button {
-      font-family: Ubuntu;
-      font-size: 2rem;
-      font-weight: 500;
-      height: 75px;
-      width: 200px;
+  .bottom-col {
+    .button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      width: 100%;
+      .btn {
+        font-family: Ubuntu;
+        font-size: 2rem;
+        font-weight: 500;
+        height: 75px;
+        width: 200px;
+      }
     }
   }
 }
@@ -177,28 +166,35 @@ export default {
   justify-content: center;
   height: 100%;
 
-  .hand {
-    margin-top: auto;
-    margin-bottom: 20px;
-    &__body {
-      .playing-card {
-        width: 40px;
-        transition: all 0.2s;
-        transition-delay: 0.2s;
+  .hand-col {
+    display: flex;
+    justify-content: center;    
+    align-items: center;
 
-        &:hover {
-          margin-top: -70px;
-          transition: all 0.2s ease-in;
-          transition-delay: 0.42s;
-        }
+    .hand {
+      &__body {
+        display: flex;
 
-        &:last-child {
-          width: auto;
-        }
-        &:active {
-          margin-top: -70px;
-          transition: all 0.1s ease-in;
+        .playing-card {
+          width: 40px;
+          transition: all 0.2s;
           transition-delay: 0.2s;
+          
+          &:hover {
+            width: 161px;
+            transition: all 0.2s ease-in;
+            transition-delay: 0.42s;
+          }
+
+          &:last-child {
+            width: 40px !important;
+          }
+
+          &:active {
+            margin-top: -70px;
+            transition: all 0.1s ease-in;
+            transition-delay: 0.2s;
+          }
         }
       }
     }
