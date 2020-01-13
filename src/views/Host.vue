@@ -14,8 +14,8 @@
       </div>
       <div class="col-6">
         <div class="row d-flex justify-content-center">
-          <game-card :rank="stack.rank" :suit="stack.suit" />
-          <game-card class="ml-4" rank="CARD" suit="BACK" />
+          <game-card :rank="stack.rank" :suit="stack.suit" class="kaartje"/>
+          <game-card rank="CARD" suit="BACK" class="kaartje"/>
         </div>
       </div>
       <div class="col">
@@ -70,12 +70,16 @@ export default {
 
 <style lang="scss">
 .code {
-  margin-left: 30px;
+  text-align: center;
   font-size: 30px;
   color: white;
 }
 p {
+  text-align: center;
   font-size: 30px;
   color: white;
+}
+.kaartje{
+  margin: 10px;
 }
 </style>

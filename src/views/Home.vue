@@ -20,13 +20,13 @@
             <b-button
               variant="success"
               class="float-left button"
-              @click.prevent="joinLobby"
-            >Join game</b-button>
+              @click.prevent="createGame"
+            >Host game</b-button>
             <b-button
               variant="success"
               class="float-right button"
-              @click.prevent="createGame"
-            >Host game</b-button>
+              @click.prevent="joinLobby"
+            >Join game</b-button>
           </div>
         </div>
       </div>
@@ -46,13 +46,13 @@
             <b-button
               variant="success"
               class="float-left button"
-              @click.prevent="joinLobby"
-            >Join game</b-button>
+              @click.prevent="createGame"
+            >Host game</b-button>
             <b-button
               variant="success"
               class="float-right button"
-              @click.prevent="createGame"
-            >Host game</b-button>
+              @click.prevent="joinLobby"
+            >Join game</b-button>
           </div>
         </div>
       </div>

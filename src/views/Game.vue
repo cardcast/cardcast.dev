@@ -2,7 +2,7 @@
   <div class="game-screen">
     <b-container fluid class="h-100">
       <b-row class="main-row">
-        <b-col>
+        <b-col class="hand-col">
           <div v-if="!started" class="container">
             <div class="row">
               <div class="col d-flex justify-content-center">
@@ -34,32 +34,30 @@
           </div>
 
           <div class="hand">
-            <div class="hand__body">
-              <transition-group name="list" tag="div">
-                <game-card
-                  transition-group
-                  name="list"
-                  tag="p"
-                  class="list-item"
-                  v-for="(card) in cards "
-                  :key="card.suit + card.rank + card.id"
-                  :suit="card.suit"
-                  :rank="card.rank"
-                  @dblclick.native="play(card)"
-                />
-              </transition-group>
-            </div>
+            <transition-group name="list" tag="div" class="hand__body">
+              <game-card
+                transition-group
+                name="list"
+                tag="p"
+                class="list-item"
+                v-for="(card) in cards "
+                :key="card.suit + card.rank + card.id"
+                :suit="card.suit"
+                :rank="card.rank"
+                v-on:click.native="play(card)"
+              />
+            </transition-group>
           </div>
         </b-col>
       </b-row>
 
       <b-row class="bottom-row">
-        <b-col cols="12" lg="2" sm="6" xs="2">
+        <b-col cols="12" lg="2" sm="6" xs="2" class="bottom-col">
           <div class="button">
             <b-button variant="danger" size="lg" to="/">Leave</b-button>
           </div>
         </b-col>
-        <b-col cols="12" lg="2" sm="6" xs="2" offset-lg="8">
+        <b-col cols="12" lg="2" sm="6" xs="2" offset-lg="8" class="bottom-col">
           <div class="button">
             <b-button
               v-if="!hasDrawn"
@@ -137,6 +135,8 @@ export default {
           result.cards.forEach(card => {
             card.id = Math.floor(Math.random() * 1000000);
             this.cards.push(card);
+            this.yourTurn = false;
+            this.$nextTick(()=>{document.getElementsByClassName('hand__body')[0].lastElementChild.scrollIntoView({behavior: "smooth", block: "end", inline: "end"});})
             // Aight so basically the the length of the cards received for the server is always bigger than one if its
             // a bullying stack. so if the cards being given to the player are bigger than one we act if the player didnt draw the cards himself
             // to make it so the player can draw after being punished.
@@ -171,6 +171,13 @@ export default {
     }
   },
   mounted() {
+    var item = document.getElementsByClassName('hand')[0];
+
+    window.addEventListener('wheel', function(e) {
+
+      if (e.deltaY > 0) item.scrollLeft += 100;
+      else item.scrollLeft -= 100;
+    });
     this.$store.dispatch("subscribe", {
       type: "CB_PlayerWin",
       callback: result => {
@@ -249,29 +256,21 @@ export default {
 .bottom-row {
   height: 150px;
   background-color: #292929;
-  .code-link {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    margin-left: 25px;
-    span {
-      color: white;
-      font-family: Ubuntu;
-      font-size: 3rem;
-    }
-  }
-  .button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    width: 100%;
-    button {
-      font-family: Ubuntu;
-      font-size: 2rem;
-      font-weight: 500;
-      height: 75px;
-      width: 200px;
+  .bottom-col {
+    max-width: 50%;
+    .button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      width: 100%;
+      .btn {
+        font-family: Ubuntu;
+        font-size: 2rem;
+        font-weight: 500;
+        height: 75px;
+        width: 200px;
+      }
     }
   }
 }
@@ -298,28 +297,40 @@ export default {
   justify-content: center;
   height: 100%;
 
-  .hand {
-    margin-top: auto;
-    margin-bottom: 20px;
-    &__body {
-      .playing-card {
-        width: 40px;
-        transition: all 0.2s;
-        transition-delay: 0.2s;
+  .hand-col {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding-left: 10%;
+    padding-right: 10%;
 
-        &:hover {
-          margin-top: -70px;
-          transition: all 0.2s ease-in;
-          transition-delay: 0.42s;
-        }
+    .hand {
+      width: auto;
+      overflow: auto;
+      border-radius: 8px;
+      &__body {
+        display: flex;
 
-        &:last-child {
-          width: auto;
-        }
-        &:active {
-          margin-top: -70px;
-          transition: all 0.1s ease-in;
+        .playing-card {
+          width: 45px;
+          transition: all 0.2s;
           transition-delay: 0.2s;
+          
+          &:hover {
+            width: 264px;
+            transition: all 0.2s ease-in;
+            //transition-delay: 0.42s;
+          }
+
+          &:last-child {
+            width: 266px !important;
+          }
+
+          &:active {
+            margin-top: -70px;
+            transition: all 0.1s ease-in;
+            transition-delay: 0.2s;
+          }
         }
       }
     }
