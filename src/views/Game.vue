@@ -14,7 +14,7 @@
                 :key="card.suit + card.rank + card.id"
                 :suit="card.suit"
                 :rank="card.rank"
-                @dblclick.native="play(card)"
+                v-on:click.native="play(card)"
               />
             </transition-group>
           </div>
@@ -84,12 +84,85 @@ export default {
             card.id = Math.floor(Math.random() * 1000000);
             this.cards.push(card);
             this.yourTurn = false;
+            this.$nextTick(()=>{document.getElementsByClassName('hand__body')[0].lastElementChild.scrollIntoView({behavior: "smooth", block: "end", inline: "end"});})
           });
         }
       });
+    },
+    SmoothScroll: function(target, speed, smooth) {
+      if (target === document)
+        target = (document.scrollingElement 
+                  || document.documentElement 
+                  || document.body.parentNode 
+                  || document.body) // cross browser support for document scrolling
+          
+      var moving = false
+      var pos = target.scrollTop
+      var frame = target === document.body 
+                  && document.documentElement 
+                  ? document.documentElement 
+                  : target // safari is the new IE
+      
+      target.addEventListener('mousewheel', scrolled, { passive: false })
+      target.addEventListener('DOMMouseScroll', scrolled, { passive: false })
+
+      function scrolled(e) {
+        e.preventDefault(); // disable default scrolling
+
+        var delta = normalizeWheelDelta(e)
+
+        pos += -delta * speed
+        pos = Math.max(0, Math.min(pos, target.scrollHeight - frame.clientHeight)) // limit scrolling
+
+        if (!moving) update()
+      }
+
+      function normalizeWheelDelta(e){
+        if(e.detail){
+          if(e.wheelDelta)
+            return e.wheelDelta/e.detail/40 * (e.detail>0 ? 1 : -1) // Opera
+          else
+            return -e.detail/3 // Firefox
+        }else
+          return e.wheelDelta/120 // IE,Safari,Chrome
+      }
+
+      function update() {
+        moving = true
+        
+        var delta = (pos - target.scrollTop) / smooth
+        
+        target.scrollTop += delta
+        
+        if (Math.abs(delta) > 0.5)
+          requestFrame(update)
+        else
+          moving = false
+      }
+
+      var requestFrame = function() { // requestAnimationFrame cross browser
+        return (
+          window.requestAnimationFrame ||
+          window.webkitRequestAnimationFrame ||
+          window.mozRequestAnimationFrame ||
+          window.oRequestAnimationFrame ||
+          window.msRequestAnimationFrame ||
+          function(func) {
+            window.setTimeout(func, 1000 / 50);
+          }
+        );
+      }()
     }
   },
   mounted() {
+    this.SmoothScroll(document.getElementsByClassName('hand')[0],120,12);
+    var item = document.getElementsByClassName('hand')[0];
+
+    window.addEventListener('wheel', function(e) {
+
+      if (e.deltaY > 0) item.scrollLeft += 100;
+      else item.scrollLeft -= 100;
+    });
     this.$store.dispatch("subscribe", {
       type: "CB_PlayerTurn",
       callback: result => {
@@ -127,6 +200,7 @@ export default {
   height: 150px;
   background-color: #292929;
   .bottom-col {
+    max-width: 50%;
     .button {
       display: flex;
       align-items: center;
@@ -168,26 +242,31 @@ export default {
 
   .hand-col {
     display: flex;
-    justify-content: center;    
-    align-items: center;
+    justify-content: center;
+    align-items: flex-end;
+    padding-left: 10%;
+    padding-right: 10%;
 
     .hand {
+      width: auto;
+      overflow: auto;
+      border-radius: 8px;
       &__body {
         display: flex;
 
         .playing-card {
-          width: 40px;
+          width: 45px;
           transition: all 0.2s;
           transition-delay: 0.2s;
           
           &:hover {
-            width: 161px;
+            width: 264px;
             transition: all 0.2s ease-in;
-            transition-delay: 0.42s;
+            //transition-delay: 0.42s;
           }
 
           &:last-child {
-            width: 40px !important;
+            width: 266px !important;
           }
 
           &:active {

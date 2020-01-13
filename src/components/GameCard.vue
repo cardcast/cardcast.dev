@@ -25,8 +25,8 @@ export default {
 .playing-card {
   float: left;
   &__body {
-    height: 250px;
-    width: 172px;
+    height: 400px;
+    width: 275.2px;
 
     background-size: contain;
     background-repeat: no-repeat;
