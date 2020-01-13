@@ -100,7 +100,7 @@ export default {
       yourTurn: true,
       hasDrawn: false,
       cards: [],
-      started: true,
+      started: false,
       quote: "",
       win: false
     };
