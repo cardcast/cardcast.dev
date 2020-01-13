@@ -2,27 +2,26 @@
   <div class="game-screen">
     <b-container fluid class="h-100">
       <b-row class="main-row">
-        <b-col class="hand-col">
-          <div v-if="!started" class="container">
-            <div class="row">
-              <div class="col d-flex justify-content-center">
-                <h1>Waiting for players...</h1>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col d-flex justify-content-center">
-                <b-img src="/kanye/kanye.jpg" fluid alt="Responsive image" width="500"></b-img>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col d-flex justify-content-center">
-                <transition mode="out-in" name="fade">
-                  <p class="quote" :key="quote">"{{quote}}" - Kanye West</p>
-                </transition>
-              </div>
+        <div v-if="!started" class="container">
+          <div class="row">
+            <div class="col d-flex justify-content-center">
+              <h1>Waiting for players...</h1>
             </div>
           </div>
-
+          <div class="row">
+            <div class="col d-flex justify-content-center">
+              <b-img src="/kanye/kanye.jpg" fluid alt="Responsive image" width="500"></b-img>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col d-flex justify-content-center">
+              <transition mode="out-in" name="fade">
+                <p class="quote" :key="quote">"{{quote}}" - Kanye West</p>
+              </transition>
+            </div>
+          </div>
+        </div>
+        <b-col v-else class="hand-col">
           <div v-if="win" class="container">
             <div class="row">
               <div class="col d-flex justify-content-center">
@@ -136,17 +135,24 @@ export default {
             card.id = Math.floor(Math.random() * 1000000);
             this.cards.push(card);
             this.yourTurn = false;
-            this.$nextTick(()=>{document.getElementsByClassName('hand__body')[0].lastElementChild.scrollIntoView({behavior: "smooth", block: "end", inline: "end"});})
-            // Aight so basically the the length of the cards received for the server is always bigger than one if its
-            // a bullying stack. so if the cards being given to the player are bigger than one we act if the player didnt draw the cards himself
-            // to make it so the player can draw after being punished.
-            if(result.cards.length > 1){
-              this.hasDrawn = false;
-            }
-            else{
-              this.hasDrawn = true;
-            }
+            this.$nextTick(() => {
+              document
+                .getElementsByClassName("hand__body")[0]
+                .lastElementChild.scrollIntoView({
+                  behavior: "smooth",
+                  block: "end",
+                  inline: "end"
+                });
+            });
           });
+          // Aight so basically the the length of the cards received for the server is always bigger than one if its
+          // a bullying stack. so if the cards being given to the player are bigger than one we act if the player didnt draw the cards himself
+          // to make it so the player can draw after being punished.
+          if (result.cards.length > 1) {
+            this.hasDrawn = false;
+          } else {
+            this.hasDrawn = true;
+          }
         }
       });
     },
@@ -157,7 +163,7 @@ export default {
           this.yourTurn = false;
           this.hasDrawn = false;
         }
-      })
+      });
     },
     generateQuote: function() {
       axios
@@ -171,10 +177,9 @@ export default {
     }
   },
   mounted() {
-    var item = document.getElementsByClassName('hand')[0];
+    var item = document.getElementsByClassName("hand")[0];
 
-    window.addEventListener('wheel', function(e) {
-
+    window.addEventListener("wheel", function(e) {
       if (e.deltaY > 0) item.scrollLeft += 100;
       else item.scrollLeft -= 100;
     });
@@ -182,21 +187,15 @@ export default {
       type: "CB_PlayerWin",
       callback: result => {
         if (result.win) {
-          console.log("you win");
           this.win = true;
         }
-      }
-    });
-    this.$store.dispatch("subscribe", {
-      type: "CB_PlayerTurn",
-      callback: result => {
-        this.yourTurn = result;
       }
     });
     this.$store.dispatch("subscribe", {
       type: "CB_PlayersTurn",
       callback: result => {
         this.yourTurn = true;
+        this.hasDrawn = false;
       }
     });
     this.$store.dispatch("subscribe", {
@@ -315,7 +314,7 @@ export default {
           width: 45px;
           transition: all 0.2s;
           transition-delay: 0.2s;
-          
+
           &:hover {
             width: 264px;
             transition: all 0.2s ease-in;
