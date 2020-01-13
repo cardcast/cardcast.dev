@@ -123,6 +123,7 @@ export default {
           } else {
             this.cards.splice(index, 1);
             this.yourTurn = false;
+            this.hasDrawn = false;
           }
         }
       });
@@ -131,6 +132,12 @@ export default {
       this.$store.dispatch("sendMessage", {
         message: new PlayerDrawCard(),
         callback: result => {
+          this.hasDrawn = true;
+          
+          if (result.cards.length > 1) {
+            this.hasDrawn = false;
+          }
+
           result.cards.forEach(card => {
             card.id = Math.floor(Math.random() * 1000000);
             this.cards.push(card);
@@ -148,11 +155,6 @@ export default {
           // Aight so basically the the length of the cards received for the server is always bigger than one if its
           // a bullying stack. so if the cards being given to the player are bigger than one we act if the player didnt draw the cards himself
           // to make it so the player can draw after being punished.
-          if (result.cards.length > 1) {
-            this.hasDrawn = false;
-          } else {
-            this.hasDrawn = true;
-          }
         }
       });
     },
@@ -195,7 +197,6 @@ export default {
       type: "CB_PlayersTurn",
       callback: result => {
         this.yourTurn = true;
-        this.hasDrawn = false;
       }
     });
     this.$store.dispatch("subscribe", {
