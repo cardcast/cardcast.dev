@@ -45,7 +45,9 @@ export default {
       callback: result => {
         setTimeout(() => {
           this.currentTurn = result.nextPlayer;
-          this.stack = result.card;
+          if(result.card !== null) {
+            this.stack = result.card;
+          }
           this.$forceUpdate();
         }, 500);
       }

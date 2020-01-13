@@ -114,7 +114,6 @@ export default {
   },
   mounted() {
     this.setCode();
-    this.$connect();
     this.$options.sockets.onopen = data => {
       this.isLoading = false;
     };
