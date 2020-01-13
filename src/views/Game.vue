@@ -51,11 +51,19 @@
         <b-col cols="12" lg="2" sm="6" xs="2" offset-lg="8">
           <div class="button">
             <b-button
+              v-if="!hasDrawn"
               variant="success"
               :disabled="!yourTurn || !started"
               size="lg"
               v-on:click="draw"
             >Draw</b-button>
+            <b-button
+              v-else
+              variant="danger"
+              :disabled="!yourTurn || !started"
+              size="lg"
+              v-on:click="pass"
+            >Pass</b-button>
           </div>
         </b-col>
       </b-row>
@@ -69,6 +77,7 @@ import axios from "axios";
 import GameCard from "../components/GameCard.vue";
 import PlayerDrawCard from "../networking/serverbound/playerDrawCard.message";
 import PlayerPlayCard from "../networking/serverbound/playerPlayCard.message";
+import PlayerPassTurn from "../networking/serverbound/playerPassTurn.message";
 
 import store from "./../store/index";
 
@@ -80,6 +89,7 @@ export default {
     return {
       code: this.$route.params.code,
       yourTurn: true,
+      hasDrawn: false,
       cards: [],
       started: false,
       quote: ""
@@ -115,10 +125,27 @@ export default {
           result.cards.forEach(card => {
             card.id = Math.floor(Math.random() * 1000000);
             this.cards.push(card);
-            this.yourTurn = false;
+            // Aight so basically the the length of the cards received for the server is always bigger than one if its
+            // a bullying stack. so if the cards being given to the player are bigger than one we act if the player didnt draw the cards himself
+            // to make it so the player can draw after being punished.
+            if(result.cards.length > 1){
+              this.hasDrawn = false;
+            }
+            else{
+              this.hasDrawn = true;
+            }
           });
         }
       });
+    },
+    pass: function() {
+      this.$store.dispatch("sendMessage", {
+        message: new PlayerPassTurn(),
+        callback: result => {
+          this.yourTurn = false;
+          this.hasDrawn = false;
+        }
+      })
     },
     generateQuote: function() {
       axios
