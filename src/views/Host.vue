@@ -1,6 +1,11 @@
 <template>
   <div class="container h-100">
-    <div class="row align-items-center h-100">
+    <div class="row align-items-center h-100" v-if="winner">
+      <div id="win-overlay">
+        <div id="overlay-text">{{winner.name}} wins!</div>
+      </div>
+    </div>
+    <div class="row align-items-center h-100" v-else>
       <div class="col">
         <div class="code">
           <h2>Code</h2>
@@ -31,7 +36,8 @@ export default {
     return {
       code: this.$route.params.code,
       stack: this.$route.params.stack[0],
-      currentTurn: this.$route.params.currentTurn
+      currentTurn: this.$route.params.currentTurn,
+      winner: null
     };
   },
   components: {
@@ -48,6 +54,12 @@ export default {
           this.stack = result.card;
           this.$forceUpdate();
         }, 500);
+      }
+    });
+    this.$store.dispatch("subscribe", {
+      type: "HB_PlayerWin",
+      callback: result => {
+        this.winner = result.winningPlayer;
       }
     });
   }

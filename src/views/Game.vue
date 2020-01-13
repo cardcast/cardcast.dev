@@ -22,6 +22,17 @@
               </div>
             </div>
           </div>
+
+          <div v-if="win" class="container">
+            <div class="row">
+              <div class="col d-flex justify-content-center">
+                <div id="win-overlay">
+                  <div id="overlay-text">You win!</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="hand">
             <div class="hand__body">
               <transition-group name="list" tag="div">
@@ -81,8 +92,9 @@ export default {
       code: this.$route.params.code,
       yourTurn: true,
       cards: [],
-      started: false,
-      quote: ""
+      started: true,
+      quote: "",
+      win: false
     };
   },
   created() {
@@ -133,6 +145,15 @@ export default {
   },
   mounted() {
     this.$store.dispatch("subscribe", {
+      type: "CB_PlayerWin",
+      callback: result => {
+        if (result.win) {
+          console.log("you win");
+          this.win = true;
+        }
+      }
+    });
+    this.$store.dispatch("subscribe", {
       type: "CB_PlayerTurn",
       callback: result => {
         this.yourTurn = result;
@@ -167,12 +188,35 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .main-row {
   color: white;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
   text-align: center;
+}
+
+#win-overlay {
+  position: fixed; /* Sit on top of the page content */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+  z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer; /* Add a pointer on hover */
+}
+
+#overlay-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 50px;
+  color: white;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
 }
 
 .bottom-row {
